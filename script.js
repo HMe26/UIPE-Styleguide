@@ -4,7 +4,7 @@ const store={get:(k,d)=>{try{return localStorage.getItem(k)??d}catch(e){return d
 let mode=store.get('uipe-sg-mode',(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark-classic':'classic');
 let sec=(location.hash||'#screens').slice(1);let q='';let fmt=store.get('uipe-sg-fmt','hex');
 const ST={cgroup:'all',compare:false,pf:'all',pm:'all',pl:'all',pd:'all',sz:28,tw:'UIPE Platform — منصة الجامعة',cfilter:'all',cdiff:false,dir:'ltr',dis:false,fg:'text/primary',bg:'bg/surface'};
-const SECS=[['screens','الشاشات الحقيقية'],['colors','الألوان'],['type','الخطوط'],['space','المسافات والأبعاد'],['comps','Components'],['specs','Specs'],['icons','الأيقونات'],['export','تصدير']];
+const SECS=[['screens','الشاشات'],['colors','الألوان'],['type','الخطوط'],['space','المسافات والأبعاد'],['comps','Components'],['specs','Specs'],['icons','الأيقونات'],['export','تصدير']];
 const smode=()=>mode.startsWith('dark')?'dark':mode;
 const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
 const c=(n,m=mode)=>{const r=M.color_rows.find(r=>r.figma_name===n);return r?(r[m+'_css']||r[m+'_hex']):'transparent'};
@@ -32,7 +32,7 @@ function screensView(){
  const groups=all.filter(f).map(g=>({...g,vs:g.variants.filter(vmatch)})).filter(g=>g.vs.length);
  const total=all.reduce((n,g)=>n+g.variants.length,0);
  const chips=(key,opts)=>`<div class="seg">`+opts.map(([v,l])=>`<button data-k="${key}" data-v="${v}" class="${ST[key]===v?'on':''}">${l}</button>`).join('')+`</div>`;
- let h=`<h2>الشاشات الحقيقية من المشروع</h2><p class="sub">كل شاشات الـ React frontend الفعلية (نفس الـ components والـ CSS والـ routes) مقسّمة حسب البوابة، بحالة بيانات فاضية (من غير باك-إند). الشاشات الأساسية ليها نسخ Light/Dark/عربي/موبايل. دوس على أي صورة للتكبير، وجرّب المقارنة بين الأوضاع.</p>
+ let h=`<h2>شاشات المنصة</h2><p class="sub">شاشات المنصة كاملة مقسّمة حسب البوابة. الشاشات الأساسية متاحة بأوضاع Light وDark وبالعربي والإنجليزي وعلى الموبايل. اضغط على أي صورة للتكبير، وجرّب المقارنة بين الأوضاع.</p>
  <div class="hero"><div class="stat"><b>${total}</b><span>لقطة</span></div><div class="stat"><b>${all.length}</b><span>شاشة</span></div><div class="stat"><b>${portals.length}</b><span>بوابة</span></div><div class="stat"><b>${groups.length}</b><span>معروضة دلوقتي</span></div></div>
  <div class="bar">${chips('pf',[['all','كل البوابات'],...portals.map(p=>[p,p+' '+all.filter(g=>g.portal===p).length])])}${chips('pm',[['all','كل الأوضاع'],['classic','Classic'],['light','Light'],['dark','Dark']])}${chips('pl',[['all','AR+EN'],['en','EN'],['ar','AR']])}${chips('pd',[['all','كل الأجهزة'],['desktop','Desktop'],['mobile','Mobile']])}</div>`;
  if(!groups.length)return h+'<div class="empty">مفيش نتائج بالفلاتر دي.</div>';
